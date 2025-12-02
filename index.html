@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charity Connector Hub</title>
+    <style>
+        :root {
+            --primary-green: #2bb368;
+            --dark-brown: #5e5240;
+            --light-cream: #faf8f3;
+            --earth-brown: #8b6f47;
+            --coral-accent: #ff6b5a;
+            --deep-soil: #3d2f24;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.16);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: linear-gradient(135deg, #faf8f3 0%, #f5f2ed 100%);
+            color: #2c2c2c;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: linear-gradient(135deg, var(--primary-green) 0%, #249356 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: white;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .auth-section {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .user-info {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: var(--coral-accent);
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 107, 90, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #ff5645;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 107, 90, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(43, 179, 104, 0.95) 0%, rgba(36, 147, 86, 0.85) 100%), url('https://images.unsplash.com/photo-1552664730-d307ca884978?w=1920&h=800&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 6rem 2rem;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: white;
+            letter-spacing: -1px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Section */
+        section {
+            padding: 4rem 2rem;
+        }
+
+        section h2 {
+            font-size: 2.5rem;
+            color: var(--deep-soil);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: #888;
+            margin-bottom: 3rem;
+        }
+
+        /* Organization Grid */
+        .org-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .org-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .org-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .org-card-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-brown) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            font-weight: 300;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .org-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close {
+            color: #999;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: var(--primary-green);
+        }
+
+        .modal-content h2 {
+            color: var(--deep-soil);
+            margin-bottom: 1rem;
+            margin-top: 0;
+            font-size: 1.8rem;
+        }
+
+        .modal-content p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--deep-soil);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(43, 179, 104, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-group small {
+            display: block;
+            margin-top: 0.5rem;
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 600px) {
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
+
+            .modal-content h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        .org-card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(43, 179, 104, 0.1);
+            transition: background 0.3s ease;
+        }
+
+        .org-card:hover .org-card-overlay {
+            background: rgba(43, 179, 104, 0.2);
+        }
+
+        .org-card-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .org-category {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(43, 179, 104, 0.1), rgba(94, 82, 64, 0.05));
+            color: var(--primary-green);
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            width: fit-content;
+        }
+
+        .org-card h3 {
+            font-size: 1.4rem;
+            color: var(--deep-soil);
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+
+        .org-card p {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+
+        .org-stats {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-top: 1px solid #eee;
+            margin-top: auto;
+            font-size: 0.85rem;
+        }
+
+        .org-stat {
+            flex: 1;
+            text-align: center;
+        }
+
+        .org-stat-value {
+            font-weight: 700;
+            color: var(--primary-green);
+            font-size: 1.1rem;
+        }
+
+        .org-stat-label {
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        .org-card-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .action-btn {
+            padding: 0.6rem;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .action-btn:hover {
+            border-color: var(--primary-green);
+            color: var(--primary-green);
+            background: rgba(43, 179, 104, 0.05);
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-btn {
+            padding: 0.6rem 1.2rem;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            border-color: var(--primary-green);
+            background: var(--primary-green);
+            color: white;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(43, 179, 104, 0.1);
+        }
+
+        /* Stats Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .stat-card-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card-label {
+            color: #666;
+            font-weight: 600;
+        }
+
+        /* Modal/Feature Section */
+        .feature-section {
+            background: white;
+            border-radius: 12px;
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            margin: 3rem 0;
+        }
+
+        .feature-section h3 {
+            color: var(--deep-soil);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(43, 179, 104, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.5rem;
+        }
+
+        .feature-text h4 {
+            color: var(--deep-soil);
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-text p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--deep-soil);
+            color: white;
+            padding: 3rem 2rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary-green);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Section Header Images */
+        .section-header-image {
+            width: 100%;
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-header-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(43, 179, 104, 0.2) 0%, rgba(94, 82, 64, 0.1) 100%);
+            z-index: 1;
+        }
+
+        .section-header-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            z-index: 2;
+        }
+
+        .section-header-title h2 {
+            color: white;
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .org-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-bar {
+                flex-direction: column;
+            }
+
+            .search-box {
+                min-width: 100%;
+            }
+
+            .feature-section {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .org-card {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .org-card:nth-child(1) { animation-delay: 0.1s; }
+        .org-card:nth-child(2) { animation-delay: 0.2s; }
+        .org-card:nth-child(3) { animation-delay: 0.3s; }
+        .org-card:nth-child(4) { animation-delay: 0.4s; }
+        .org-card:nth-child(5) { animation-delay: 0.5s; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <div class="logo-icon">🌍</div>
+                <span>Charity Hub</span>
+            </div>
+            <nav>
+                <a href="#explore">Explore</a>
+                <a href="#about">About</a>
+                <a href="#impact">Impact</a>
+                <button class="btn btn-primary" onclick="showModal()">Get Involved</button>
+                <div class="auth-section">
+                    <span class="user-info" id="userDisplay"></span>
+                    <button class="btn btn-secondary" id="authBtn" onclick="toggleAuth()">Login</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Connect. Give. Change Lives.</h1>
+            <p>Discover global charitable organizations making real impact. Support causes you believe in through donations, volunteering, or advocacy.</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="scrollToOrgs()">Browse Organizations</button>
+                <button class="btn btn-secondary" onclick="showAddOrgForm()">Add Your Cause</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Impact Stats -->
+        <section id="impact">
+            <h2>Our Global Impact</h2>
+            <div class="stats-grid">
+            </div>
+        </section>
+
+        <!-- Organization Grid -->
+        <section id="explore">
+            <h2>Featured Charitable Organizations</h2>
+            <p class="section-subtitle">Explore verified charitable organizations working on causes that matter</p>
+
+            <div class="filter-bar">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search organizations..." onkeyup="filterOrganizations()">
+                </div>
+                <button class="filter-btn active" onclick="filterByCategory(this, 'all')">All</button>
+                <button class="filter-btn" onclick="filterByCategory(this, 'environment')">Environment</button>
+                <button class="filter-btn" onclick="filterByCategory(this, 'health')">Health</button>
+                <button class="filter-btn" onclick="filterByCategory(this, 'education')">Education</button>
+                <button class="filter-btn" onclick="filterByCategory(this, 'social')">Social</button>
+            </div>
+
+            <div class="org-grid" id="orgGrid">
+                <!-- Cards populated by JavaScript -->
+            </div>
+        </section>
+    </div>
+
+    <!-- Modals Container -->
+    <div id="modalsContainer"></div>
+
+    <div class="container">
+        <section>
+        </section>
+
+        <!-- Features Section -->
+        <section id="about">
+            <div class="feature-section">
+                <h3>Why Choose Charity Connector Hub?</h3>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">
+                            <h4>Verified Organizations</h4>
+                            <p>Every organization is vetted and verified for authenticity and impact measurement.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">💡</div>
+                        <div class="feature-text">
+                            <h4>Flexible Support</h4>
+                            <p>Choose your way to contribute: donate financially, volunteer time, or share with your network.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📊</div>
+                        <div class="feature-text">
+                            <h4>Track Impact</h4>
+                            <p>See exactly how your contribution is making a difference with detailed impact reports.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🌐</div>
+                        <div class="feature-text">
+                            <h4>Global Reach</h4>
+                            <p>Connect with organizations across 89 countries working on diverse global challenges.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🔒</div>
+                        <div class="feature-text">
+                            <h4>Secure Donations</h4>
+                            <p>Industry-leading security ensures your donations reach organizations safely and securely.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">👥</div>
+                        <div class="feature-text">
+                            <h4>Community Driven</h4>
+                            <p>Join a global community of changemakers united by shared values and commitment to impact.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About</h4>
+                <ul>
+                    <li><a href="#">Our Mission</a></li>
+                    <li><a href="#">Our Team</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Donate</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">Accessibility</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <ul>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Instagram</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Charity Connector Hub. All rights reserved. Empowering change worldwide.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Sample organization data
+        const organizations = [
+            {
+                id: 1,
+                name: "Global Market Aid",
+                category: "social",
+                image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad576?w=500&h=300&fit=crop",
+                description: "Empowering small farmers in developing nations with sustainable agricultural practices and fair-trade market access.",
+                sectionImage: "https://images.unsplash.com/photo-1625246333195-78d9c38ad576?w=1200&h=400&fit=crop"
+            },
+            {
+                id: 2,
+                name: "Clean Energy Projects",
+                category: "environment",
+                image: "https://images.unsplash.com/photo-1532996122724-8f3c2cd83c5d?w=500&h=300&fit=crop",
+                description: "Transitioning communities to renewable energy sources through solar installation and education programs.",
+                sectionImage: "https://images.unsplash.com/photo-1532996122724-8f3c2cd83c5d?w=1200&h=400&fit=crop"
+            },
+            {
+                id: 3,
+                name: "Hope for Children",
+                category: "education",
+                image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=500&h=300&fit=crop",
+                description: "Providing quality education and mentorship to underprivileged children in urban and rural communities."
+            },
+            {
+                id: 4,
+                name: "Wildlife Rescue Fund",
+                category: "environment",
+                image: "https://images.unsplash.com/photo-1437811072029-85b89a9a88b9?w=500&h=300&fit=crop",
+                description: "Protecting endangered species and their habitats through conservation initiatives and community engagement.",
+                sectionImage: "https://images.unsplash.com/photo-1437811072029-85b89a9a88b9?w=1200&h=400&fit=crop"
+            },
+            {
+                id: 5,
+                name: "Animal Protection",
+                category: "social",
+                image: "https://images.unsplash.com/photo-1611003228941-98852ba62227?w=500&h=300&fit=crop",
+                description: "Advocating for animal welfare, rescue operations, and ethical treatment standards across the globe."
+            },
+            {
+                id: 6,
+                name: "Health First Initiative",
+                category: "health",
+                image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=500&h=300&fit=crop",
+                description: "Providing accessible healthcare, vaccination programs, and medical training in underserved regions."
+            },
+            {
+                id: 7,
+                name: "Ocean Guardians",
+                category: "environment",
+                image: "https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=500&h=300&fit=crop",
+                description: "Protecting marine ecosystems and combating plastic pollution through cleanup drives and policy advocacy.",
+                sectionImage: "https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=1200&h=400&fit=crop"
+            },
+            {
+                id: 8,
+                name: "STEM for All",
+                category: "education",
+                image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop",
+                description: "Democratizing science and technology education to inspire the next generation of innovators."
+            }
+        ];
+
+        let currentFilter = 'all';
+
+        // Render organization cards
+        function renderOrganizations(orgsToRender) {
+            const grid = document.getElementById('orgGrid');
+            grid.innerHTML = orgsToRender.map(org => `
+                <div class="org-card">
+                    <div class="org-card-image">
+                        <img src="${org.image}" alt="${org.name}" onerror="this.src='https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=500&h=300&fit=crop'">
+                        <div class="org-card-overlay"></div>
+                    </div>
+                    <div class="org-card-content">
+                        <span class="org-category">${org.category.charAt(0).toUpperCase() + org.category.slice(1)}</span>
+                        <h3>${org.name}</h3>
+                        <p>${org.description}</p>
+                        <div class="org-card-actions">
+                            <button class="action-btn" onclick="takeAction('donate', '${org.name}')">💰 Donate</button>
+                            <button class="action-btn" onclick="takeAction('volunteer', '${org.name}')">🤝 Volunteer</button>
+                            <button class="action-btn" onclick="takeAction('share', '${org.name}')">📢 Share</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filter organizations by category
+        function filterByCategory(button, category) {
+            currentFilter = category;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            const filtered = category === 'all' 
+                ? organizations 
+                : organizations.filter(org => org.category === category);
+            renderOrganizations(filtered);
+        }
+
+        // Search organizations
+        function filterOrganizations() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = organizations.filter(org =>
+                org.name.toLowerCase().includes(searchTerm) ||
+                org.description.toLowerCase().includes(searchTerm)
+            );
+            renderOrganizations(filtered);
+        }
+
+        // Action handlers
+        function takeAction(actionType, orgName) {
+            if (actionType === 'donate') {
+                showDonationModal(orgName);
+            } else if (actionType === 'volunteer') {
+                showVolunteerModal(orgName);
+            } else if (actionType === 'share') {
+                showShareModal(orgName);
+            }
+        }
+
+        // Scroll to organizations
+        function scrollToOrgs() {
+            document.getElementById('explore').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Modal HTML injection
+        function createModals() {
+            const modalHTML = `
+                <!-- Donation Modal -->
+                <div id="donationModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeModal('donationModal')">&times;</span>
+                        <h2>💰 Make a Donation</h2>
+                        <p id="donationOrgName"></p>
+                        <form onsubmit="processDonation(event)">
+                            <div class="form-group">
+                                <label for="donationAmount">Donation Amount ($):</label>
+                                <input type="number" id="donationAmount" min="1" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="donationType">Type:</label>
+                                <select id="donationType" required>
+                                    <option value="">Select...</option>
+                                    <option value="one-time">One-time</option>
+                                    <option value="monthly">Monthly Recurring</option>
+                                    <option value="annual">Annual</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="donorName">Your Name:</label>
+                                <input type="text" id="donorName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="donorEmail">Your Email:</label>
+                                <input type="email" id="donorEmail" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Complete Donation 🎉</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Volunteer Modal -->
+                <div id="volunteerModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeModal('volunteerModal')">&times;</span>
+                        <h2>🤝 Become a Volunteer</h2>
+                        <p id="volunteerOrgName"></p>
+                        <form onsubmit="processVolunteer(event)">
+                            <div class="form-group">
+                                <label for="volunteerName">Your Name:</label>
+                                <input type="text" id="volunteerName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="volunteerEmail">Your Email:</label>
+                                <input type="email" id="volunteerEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="volunteerPhone">Phone Number:</label>
+                                <input type="tel" id="volunteerPhone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="volunteerHours">Available Hours/Week:</label>
+                                <input type="number" id="volunteerHours" min="1" max="50" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="volunteerSkills">Your Skills:</label>
+                                <textarea id="volunteerSkills" placeholder="Tell us about your skills..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Volunteer Application ✅</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Share Modal -->
+                <div id="shareModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeModal('shareModal')">&times;</span>
+                        <h2>📢 Share with Your Network</h2>
+                        <p id="shareOrgName"></p>
+                        <form onsubmit="processShare(event)">
+                            <div class="form-group">
+                                <label for="shareName">Your Name:</label>
+                                <input type="text" id="shareName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="shareEmail">Your Email:</label>
+                                <input type="email" id="shareEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="recipientEmails">Recipients (comma-separated):</label>
+                                <textarea id="recipientEmails" placeholder="email1@example.com, email2@example.com" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="shareMessage">Personal Message:</label>
+                                <textarea id="shareMessage" placeholder="Add a personal message..." rows="4"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Invitations 🚀</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Login Modal -->
+                <div id="loginModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeModal('loginModal')">&times;</span>
+                        <h2>🔐 Login</h2>
+                        <form onsubmit="processLogin(event)">
+                            <div class="form-group">
+                                <label for="loginEmail">Email:</label>
+                                <input type="email" id="loginEmail" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="loginPassword">Password:</label>
+                                <input type="password" id="loginPassword" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Login 🔓</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Add Cause Modal -->
+                <div id="addCauseModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeModal('addCauseModal')">&times;</span>
+                        <h2>🌟 Add Your Cause</h2>
+                        <form onsubmit="processAddCause(event)">
+                            <div class="form-group">
+                                <label for="causeName">Organization Name:</label>
+                                <input type="text" id="causeName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="causeCategory">Category:</label>
+                                <select id="causeCategory" required>
+                                    <option value="">Select Category...</option>
+                                    <option value="environment">Environment</option>
+                                    <option value="health">Health</option>
+                                    <option value="education">Education</option>
+                                    <option value="social">Social</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="causeWebsite">Website:</label>
+                                <input type="url" id="causeWebsite" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="causeDescription">Description (30-50 words):</label>
+                                <textarea id="causeDescription" placeholder="Describe your cause..." rows="4" maxlength="200" required></textarea>
+                                <small id="charCount">0/200 characters</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactPerson">Contact Person:</label>
+                                <input type="text" id="contactPerson" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactEmail">Contact Email:</label>
+                                <input type="email" id="contactEmail" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Your Cause 🎯</button>
+                        </form>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        }
+
+        // Modal functions
+        function showModal() {
+            const modal = document.getElementById('donationModal');
+            modal.classList.add('show');
+            modal.style.display = 'flex';
+        }
+
+        function showDonationModal(orgName) {
+            document.getElementById('donationOrgName').textContent = `Supporting: ${orgName}`;
+            const modal = document.getElementById('donationModal');
+            modal.classList.add('show');
+            modal.style.display = 'flex';
+        }
+
+        function showVolunteerModal(orgName) {
+            document.getElementById('volunteerOrgName').textContent = `Volunteering with: ${orgName}`;
+            const modal = document.getElementById('volunteerModal');
+            modal.classList.add('show');
+            modal.style.display = 'flex';
+        }
+
+        function showShareModal(orgName) {
+            document.getElementById('shareOrgName').textContent = `Sharing: ${orgName}`;
+            const modal = document.getElementById('shareModal');
+            modal.classList.add('show');
+            modal.style.display = 'flex';
+        }
+
+        function showAddOrgForm() {
+            const modal = document.getElementById('addCauseModal');
+            modal.classList.add('show');
+            modal.style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('show');
+            modal.style.display = 'none';
+        }
+
+        // Form submission handlers
+        function processDonation(event) {
+            event.preventDefault();
+            const amount = document.getElementById('donationAmount').value;
+            const name = document.getElementById('donorName').value;
+            alert(`✅ Thank you, ${name}! Your donation of $${amount} has been received.\n\nA confirmation email will be sent shortly.`);
+            closeModal('donationModal');
+            document.getElementById('donationModal').querySelector('form').reset();
+        }
+
+        function processVolunteer(event) {
+            event.preventDefault();
+            const name = document.getElementById('volunteerName').value;
+            const hours = document.getElementById('volunteerHours').value;
+            alert(`✅ Great, ${name}! Your volunteer application for ${hours} hours/week has been submitted.\n\nWe'll contact you soon with details!`);
+            closeModal('volunteerModal');
+            document.getElementById('volunteerModal').querySelector('form').reset();
+        }
+
+        function processShare(event) {
+            event.preventDefault();
+            const name = document.getElementById('shareName').value;
+            alert(`✅ Thanks, ${name}! Your invitations have been sent to your network.\n\nTogether, we can make a bigger impact!`);
+            closeModal('shareModal');
+            document.getElementById('shareModal').querySelector('form').reset();
+        }
+
+        function processAddCause(event) {
+            event.preventDefault();
+            const causeName = document.getElementById('causeName').value;
+            const category = document.getElementById('causeCategory').value;
+            alert(`✅ Awesome! Your cause "${causeName}" has been submitted for review.\n\nOur team will verify and list it within 24-48 hours!`);
+            closeModal('addCauseModal');
+            document.getElementById('addCauseModal').querySelector('form').reset();
+        }
+
+        // Update character count for cause description
+        document.addEventListener('DOMContentLoaded', function() {
+            const causeDesc = document.getElementById('causeDescription');
+            if (causeDesc) {
+                causeDesc.addEventListener('input', function() {
+                    document.getElementById('charCount').textContent = this.value.length + '/200 characters';
+                });
+            }
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('show');
+                event.target.style.display = 'none';
+            }
+        }
+
+        // Authentication functions
+        let isLoggedIn = false;
+        let currentUser = null;
+
+        function toggleAuth() {
+            if (isLoggedIn) {
+                logout();
+            } else {
+                showLoginModal();
+            }
+        }
+
+        function showLoginModal() {
+            const modal = document.getElementById('loginModal');
+            modal.style.display = 'block';
+        }
+
+        function processLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (email && password) {
+                isLoggedIn = true;
+                currentUser = email.split('@')[0];
+                updateAuthUI();
+                alert(`✅ Welcome, ${currentUser}! You've successfully logged in.`);
+                closeModal('loginModal');
+                document.getElementById('loginModal').querySelector('form').reset();
+            }
+        }
+
+        function logout() {
+            isLoggedIn = false;
+            currentUser = null;
+            updateAuthUI();
+            alert('👋 You have been logged out.');
+        }
+
+        function updateAuthUI() {
+            const userDisplay = document.getElementById('userDisplay');
+            const authBtn = document.getElementById('authBtn');
+            
+            if (isLoggedIn) {
+                userDisplay.textContent = `👤 ${currentUser}`;
+                authBtn.textContent = 'Logout';
+                authBtn.style.background = '#ff6b5a';
+            } else {
+                userDisplay.textContent = '';
+                authBtn.textContent = 'Login';
+                authBtn.style.background = 'rgba(255, 255, 255, 0.15)';
+            }
+        }
+
+        // Initialize modals on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            createModals();
+            renderOrganizations(organizations);
+            updateAuthUI();
+            
+            // Character counter for cause description
+            const causeDesc = document.getElementById('causeDescription');
+            if (causeDesc) {
+                causeDesc.addEventListener('input', function() {
+                    document.getElementById('charCount').textContent = this.value.length + '/200 characters';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
